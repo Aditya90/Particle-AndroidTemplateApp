@@ -11,24 +11,23 @@ import android.content.Intent;
 
 import java.io.IOException;
 
-import io.particle.android.sdk.cloud.SparkCloud;
-import io.particle.android.sdk.cloud.SparkCloudException;
+import io.particle.android.sdk.cloud.ParticleCloud;
+import io.particle.android.sdk.cloud.ParticleCloudException;
 import io.particle.android.sdk.utils.Async;
 import io.particle.android.sdk.utils.Toaster;
 
 public class MainActivity extends AppCompatActivity {
-
     // Create a facade for the particle photon
     ParticlePhotonFacade particlePhotonFacade;
 
     // String for LogCat documentation
-    private final static String TAG = "SPARK_TEST_LOG_TAG";
+    private final static String MAIN_TAG = "SPARK_TEST_LOG_TAG";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Log.i(TAG, "Call onCreate()");
+        Log.i(MAIN_TAG, "Call onCreate()");
     }
 
     @Override
@@ -60,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
         // Attempt to make a cloud connection on starting the application
         //particlePhotonFacade.AttemptParticleLogin(findViewById(R.id.mainView),
         //        this, "aditya.sreekumar@gmail.com", "12345");
-        Log.i(TAG, "Call onStart()");
+        Log.i(MAIN_TAG, "Call onStart()");
     }
 
     public void buttonLogin_Handler(View v){
@@ -78,9 +77,9 @@ public class MainActivity extends AppCompatActivity {
      */
     private void attemptLogin(View myView, final String emailInput, final String passInput){
 
-        Async.executeAsync(SparkCloud.get(myView.getContext()), new Async.ApiWork<SparkCloud, Void>() {
+        Async.executeAsync(ParticleCloud.get(myView.getContext()), new Async.ApiWork<ParticleCloud, Void>() {
 
-            public Void callApi(SparkCloud sparkCloud) throws SparkCloudException, IOException {
+            public Void callApi(ParticleCloud sparkCloud) throws ParticleCloudException, IOException {
                 sparkCloud.logIn(emailInput, passInput);
                 return null;
             }
@@ -89,21 +88,20 @@ public class MainActivity extends AppCompatActivity {
             public void onSuccess(Void aVoid) {
                 Intent loggedInIntent = new Intent(MainActivity.this, LoggedInActivity.class);
 
-                Log.i(TAG, "Call onSuccess()");
+                Log.i(MAIN_TAG, "Call onSuccess()");
 
                 Toaster.l(MainActivity.this, "Logged in");
-
                 // Switch to new screen to list all connected devices
                 startActivity(loggedInIntent);
 
             }
 
             @Override
-            public void onFailure(SparkCloudException e) {
+            public void onFailure(ParticleCloudException e) {
                 //Log.e("LOGIN_FAILURE", e);
-                Log.i(TAG, "Call onFailure()");
-                Log.i(TAG, emailInput);
-                Log.i(TAG, passInput);
+                Log.i(MAIN_TAG, "Call onFailure()");
+                Log.i(MAIN_TAG, emailInput);
+                Log.i(MAIN_TAG, passInput);
 
                 Toaster.l(MainActivity.this, "Wrong credentials or no internet connectivity, please try again");
             }
