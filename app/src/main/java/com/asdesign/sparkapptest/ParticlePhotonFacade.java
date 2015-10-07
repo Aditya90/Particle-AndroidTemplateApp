@@ -7,8 +7,6 @@ import android.view.View;
 import java.io.IOException;
 
 // Import particle photon dependencies
-import io.particle.android.sdk.cloud.SparkCloud;
-import io.particle.android.sdk.cloud.SparkCloudException;
 import io.particle.android.sdk.utils.Async;
 import io.particle.android.sdk.utils.Toaster;
 
