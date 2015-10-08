@@ -36,11 +36,6 @@ public class LoggedInActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_logged_in);
-
-        // Retrieve the list of connected devices
-        retrieveAllDevices(findViewById(R.id.loggedInMainView));
-
-        refreshDevicesList();
     }
 
     @Override
@@ -48,6 +43,17 @@ public class LoggedInActivity extends AppCompatActivity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_logged_in, menu);
         return true;
+    }
+
+    @Override
+    protected void onResume() {
+        Log.i(LOGGED_IN_TAG, "onResume()");
+
+        super.onResume();
+        setContentView(R.layout.activity_logged_in);
+
+        // Retrieve the list of connected devices
+        retrieveAllDevices(findViewById(R.id.loggedInMainView));
     }
 
     @Override
@@ -66,13 +72,16 @@ public class LoggedInActivity extends AppCompatActivity {
     }
 
     public void refreshDevicesButton_Handler(View v){
-        refreshDevicesList();
+
+        retrieveAllDevices(findViewById(R.id.loggedInMainView));
     }
     /**
      * @brief This function retrieves the list of connected devices from the cloud
      * @param myView specifies the view from which this is being called
      */
     private void retrieveAllDevices(View myView){
+
+        localSparkDevices.clear();
 
         // List out all connected devices
         Async.executeAsync(localSparkCloud, new Async.ApiWork<ParticleCloud, List<ParticleDevice>>() {
@@ -87,13 +96,12 @@ public class LoggedInActivity extends AppCompatActivity {
                 for (ParticleDevice device : devices) {
                     localSparkDevices.add(device);
                 }
-
+                refreshDevicesList();
             }
 
             @Override
             public void onFailure(ParticleCloudException e) {
                 //Log.e("SOME_TAG", e);
-                localSparkDevices.clear();
                 Log.i(LOGGED_IN_TAG, "Call onFailure()");
                 Toaster.l(LoggedInActivity.this, "Wrong credentials or no internet connectivity, please try again");
             }
