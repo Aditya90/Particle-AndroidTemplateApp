@@ -1,11 +1,13 @@
 package com.asdesign.sparkapptest;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -112,6 +114,17 @@ public class LoggedInActivity extends AppCompatActivity {
     {
         // Get the list view object
         listView = (ListView) findViewById(R.id.loggedInListView);
+
+        // Create an on click listener for the list view
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String particleDeviceName = parent.getItemAtPosition(position).toString();
+                Intent deviceConfigIntent = new Intent(LoggedInActivity.this, DeviceConfigActivity.class);
+                deviceConfigIntent.putExtra("ParticleDevice", particleDeviceName);
+                startActivity(deviceConfigIntent);
+            }
+        });
 
         // Display the devices which are connected
         if(localSparkDevices != null) {
