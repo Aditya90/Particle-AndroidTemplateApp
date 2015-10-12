@@ -1,3 +1,5 @@
+# Credits to [Renzo Crisóstomo](https://github.com/Ruenzuo/android-cd-travis-example)
+
 language: java
 jdk: oraclejdk7
 env:
