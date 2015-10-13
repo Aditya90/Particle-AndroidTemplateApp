@@ -11,6 +11,10 @@ android:
    - build-tools-23.0.1
    - $ANDROID_TARGET
    - android-23
+   - extra-google-google_play_services
+   - extra-google-m2repository
+   - extra-android-m2repository
+   - addon-google_apis-google-18
 
 before_install:
    - chmod +x gradlew
