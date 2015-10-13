@@ -8,7 +8,7 @@ android:
   components:
    - build-tools-23.0.1
    - $ANDROID_EMULATION_TARGET
-   - ANDROID_SUPPORT_TARGET
+   - $ANDROID_SUPPORT_TARGET
    - extra-google-google_play_services
    - extra-google-m2repository
    - extra-android-m2repository
