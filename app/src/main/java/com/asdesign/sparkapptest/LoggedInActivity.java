@@ -119,9 +119,15 @@ public class LoggedInActivity extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String particleDeviceName = parent.getItemAtPosition(position).toString();
                 Intent deviceConfigIntent = new Intent(LoggedInActivity.this, DeviceConfigActivity.class);
-                deviceConfigIntent.putExtra("ParticleDevice", particleDeviceName);
+                Bundle extras = new Bundle();
+                String particleDeviceName = parent.getItemAtPosition(position).toString();
+
+                Toaster.l(LoggedInActivity.this, particleDeviceName);
+
+                extras.putString("ParticleDevice", particleDeviceName);
+                deviceConfigIntent.putExtras(extras);
+
                 startActivity(deviceConfigIntent);
             }
         });

@@ -15,6 +15,7 @@ import java.util.List;
 
 import io.particle.android.sdk.cloud.ParticleCloud;
 import io.particle.android.sdk.cloud.ParticleCloudException;
+import io.particle.android.sdk.cloud.ParticleCloudSDK;
 import io.particle.android.sdk.cloud.ParticleDevice;
 import io.particle.android.sdk.utils.Async;
 import io.particle.android.sdk.utils.Toaster;
@@ -22,11 +23,10 @@ import io.particle.android.sdk.utils.Toaster;
 public class DeviceConfigActivity extends AppCompatActivity {
 
     // Get the passed in device name we chose
-    Intent passedInIntent = getIntent();
-    String nameDevice = passedInIntent.getStringExtra("ParticleDevice");
+    String nameDevice;
 
-    ParticleCloud localSparkCloud;
-    ParticleDevice localParticleDevice;
+    ParticleCloud localSparkCloud = ParticleCloudSDK.getCloud();
+    ParticleDevice localParticleDevice = null;
 
     ListView listView;
 
@@ -36,6 +36,9 @@ public class DeviceConfigActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.i(PARTICLE_DEVICE_TAG, "onCreate()");
+
+        Intent passedInIntent = getIntent();
+        nameDevice = passedInIntent.getExtras().getString("ParticleDevice");
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_device_config);
@@ -98,14 +101,19 @@ public class DeviceConfigActivity extends AppCompatActivity {
     private void listDeviceProps(){
         // Get the list view object
         listView = (ListView) findViewById(R.id.deviceConfigListView);
-
         // Copy the names of all devices to an array
         List<String> localParticleDeviceString = new ArrayList<String>();
+        localParticleDeviceString.clear();
 
-        localParticleDeviceString.add(localParticleDevice.getName().toString());
-        localParticleDeviceString.add(localParticleDevice.getID().toString());
-        localParticleDeviceString.add(localParticleDevice.getVersion().toString());
-
+        if( null != localParticleDevice) {
+            localParticleDeviceString.add(localParticleDevice.getName().toString());
+            localParticleDeviceString.add(localParticleDevice.getID().toString());
+            localParticleDeviceString.add(localParticleDevice.getVersion().toString());
+        }
+        else
+        {
+            localParticleDeviceString.add("ERROR - No devices found");
+        }
         // Define a new Adapter
         // First parameter - Context
         // Second parameter - Layout for the row
