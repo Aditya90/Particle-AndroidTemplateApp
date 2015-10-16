@@ -5,7 +5,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -27,8 +29,6 @@ public class DeviceConfigActivity extends AppCompatActivity {
 
     ParticleCloud localSparkCloud = ParticleCloudSDK.getCloud();
     ParticleDevice localParticleDevice = null;
-
-    ListView listView;
 
     private final static String PARTICLE_DEVICE_TAG = "SPARK_TEST_LOG_TAG";
 
@@ -59,10 +59,9 @@ public class DeviceConfigActivity extends AppCompatActivity {
         Log.i(PARTICLE_DEVICE_TAG, "onResume()");
 
         super.onResume();
-        setContentView(R.layout.activity_logged_in);
+        setContentView(R.layout.activity_device_config);
 
-        // Display the properties of the device
-        listDeviceProps();
+        // Display the properties is handled once the response from the init devices is completed
     }
 
     /**
@@ -84,9 +83,11 @@ public class DeviceConfigActivity extends AppCompatActivity {
                 for (ParticleDevice device : devices) {
                     if (device.getName().equals(nameDevice)) {
                         localParticleDevice = device;
-                        return;
+                        break;
                     }
                 }
+
+                listDeviceProps();
             }
 
             @Override
@@ -94,13 +95,15 @@ public class DeviceConfigActivity extends AppCompatActivity {
                 //Log.e("SOME_TAG", e);
                 Log.i(PARTICLE_DEVICE_TAG, "Call onFailure()");
                 Toaster.l(DeviceConfigActivity.this, "Wrong credentials or no internet connectivity, please try again");
+                listDeviceProps();
             }
         });
     }
 
     private void listDeviceProps(){
         // Get the list view object
-        listView = (ListView) findViewById(R.id.deviceConfigListView);
+        ListView listView = (ListView)findViewById(R.id.deviceConfigListView);
+
         // Copy the names of all devices to an array
         List<String> localParticleDeviceString = new ArrayList<String>();
         localParticleDeviceString.clear();
@@ -112,7 +115,7 @@ public class DeviceConfigActivity extends AppCompatActivity {
         }
         else
         {
-            localParticleDeviceString.add("ERROR - No devices found");
+            localParticleDeviceString.add("Warning - Device not found");
         }
         // Define a new Adapter
         // First parameter - Context

@@ -1,8 +1,8 @@
 <resources>
-    <string name="app_name">Par</string>
+    <string name="app_name">Particle Android App</string>
     <string name="openText">Please enter your login information</string>
     <string name="action_settings">Settings</string>
-    <string name="title_activity_logged_in">LoggedInActivity</string>
+    <string name="title_activity_logged_in">Connected Devices</string>
+    <string name="title_activity_device_config">Device Configuration</string>
 
-    <string name="hello_world">Hello world!</string>
 </resources>
