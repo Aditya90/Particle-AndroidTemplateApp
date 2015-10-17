@@ -14,6 +14,7 @@ import android.widget.ListView;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import io.particle.android.sdk.cloud.ParticleCloud;
 import io.particle.android.sdk.cloud.ParticleCloudException;
@@ -109,19 +110,24 @@ public class DeviceConfigActivity extends AppCompatActivity {
         localParticleDeviceString.clear();
 
         if( null != localParticleDevice) {
-            localParticleDeviceString.add(localParticleDevice.getName().toString());
-            localParticleDeviceString.add(localParticleDevice.getID().toString());
-            localParticleDeviceString.add(localParticleDevice.getVersion().toString());
+            localParticleDeviceString.add("Device Name : " + localParticleDevice.getName().toString());
+            localParticleDeviceString.add("Device Id : " + localParticleDevice.getID().toString());
+
+            localParticleDeviceString.add("Functions :");
+            for (String funcName : localParticleDevice.getFunctions()) {
+                localParticleDeviceString.add(funcName);
+            }
+            localParticleDeviceString.add("Variables :");
+            Map<String, String> vars = localParticleDevice.getVariables();
+            for (String name : vars.keySet()) {
+                localParticleDeviceString.add(String.format("variable '%s' type is '%s'", name, vars.get(name)));
+            }
         }
         else
         {
             localParticleDeviceString.add("Warning - Device not found");
         }
-        // Define a new Adapter
-        // First parameter - Context
-        // Second parameter - Layout for the row
-        // Third parameter - ID of the TextView to which the data is written
-        // Forth - the Array of data
+
         ArrayAdapter<String> localSparkDevicesAdapter = new ArrayAdapter<String>(DeviceConfigActivity.this,
                 android.R.layout.simple_list_item_1, android.R.id.text1, localParticleDeviceString);
 
