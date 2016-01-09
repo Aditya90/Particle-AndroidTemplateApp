@@ -110,8 +110,8 @@ public class DeviceConfigActivity extends AppCompatActivity {
         localParticleDeviceString.clear();
 
         if( null != localParticleDevice) {
-            localParticleDeviceString.add("Device Name : " + localParticleDevice.getName().toString());
-            localParticleDeviceString.add("Device Id : " + localParticleDevice.getID().toString());
+            localParticleDeviceString.add("Device Name : " + localParticleDevice.getName());
+            localParticleDeviceString.add("Device Id : " + localParticleDevice.getID());
 
             localParticleDeviceString.add("Functions :");
             for (String funcName : localParticleDevice.getFunctions()) {
